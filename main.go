@@ -6,6 +6,7 @@ import (
 	"net/http"
 	// echo
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 
 	"database/sql"
 	// sqlite
@@ -31,6 +32,7 @@ func main() {
 	// create a new echo server
 
 	e := echo.New()
+	e.Use(middleware.CORS())
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
