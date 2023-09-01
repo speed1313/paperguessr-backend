@@ -11,7 +11,6 @@ import (
 	// sqlite
 	_ "github.com/mattn/go-sqlite3"
 	// json
-	"encoding/json"
 )
 
 func main() {
@@ -74,7 +73,6 @@ func main() {
 		}
 		// return json
 		return c.JSON(http.StatusOK, scores)
-		
 
 	})
 
