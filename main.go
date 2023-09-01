@@ -10,6 +10,8 @@ import (
 	"database/sql"
 	// sqlite
 	_ "github.com/mattn/go-sqlite3"
+	// json
+	"encoding/json"
 )
 
 func main() {
@@ -56,15 +58,23 @@ func main() {
 			fmt.Println(err)
 		}
 		defer rows.Close()
-		// create response
-		var response string
-		for rows.Next() {
-			var score int
-			var count int
-			rows.Scan(&score, &count)
-			response += fmt.Sprintf("%d: %d\n", score, count)
+		// create response json
+		type Score struct {
+			Point string `json:"point"`
+			Count int    `json:"count"`
 		}
-		return c.String(http.StatusOK, response)
+		var scores []Score
+		for rows.Next() {
+			var score Score
+			err = rows.Scan(&score.Point, &score.Count)
+			if err != nil {
+				fmt.Println(err)
+			}
+			scores = append(scores, score)
+		}
+		// return json
+		return c.JSON(http.StatusOK, scores)
+		
 
 	})
 
